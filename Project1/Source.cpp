@@ -488,3 +488,52 @@ void twoplayers()
     startGame(first, fullBoard);
     return;
 }
+double enter_number(double x)
+{
+     label:
+         cin>>x;
+   if (cin.fail())
+    {
+        //Print error message
+        cout << "Invalid Input , it should only consist of digits!! Enter Another "<<endl;
+        //Clear error flags
+        cin.clear();
+        //Ignore any whitespace left on input stream by cin
+        cin.ignore(256, '\n');
+        goto label;
+   }
+   else if (x != 1 && x != 2  )
+    {
+        cout<<"please enter valid number"<<endl;
+        goto label;
+    } 
+                //Validating that the Input Number Is A POSITIVE INTEGER
+else if ( x<0  ){
+    cout<<"Invalid Input, Input cannot be a Negative Value!! Enter Another "<<endl;
+goto label;
+}
+return x;
+}
+double enter_choice(double y)
+{
+     label:
+         cin>>y;
+   if (cin.fail())
+    {
+        //Print error message
+        cout << "Invalid Input , it should only consist of digits!! Enter Another "<<endl;
+        //Clear error flags
+        cin.clear();
+        //Ignore any whitespace left on input stream by cin
+        cin.ignore(256, '\n');
+        goto label;
+   }
+   else if (y < 1 || y > 9)
+                {
+                    cout << "Invalid choice. Please choose a valid option: ";
+                   goto label;
+                }
+   
+               
+return y;
+}
