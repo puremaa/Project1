@@ -324,3 +324,167 @@ while(!Quit) {
     }
 } 
 }
+void startGame(int first, board* fullBoard)
+{
+    int choice;
+    bool isPlaying;
+    board *arr[9];
+    //loop to make our linked list containing 9 nodes
+    for(int i = 1; i <= 9; i++)
+    {
+        fullBoard = getBoard(fullBoard);
+        arr[i-1]=fullBoard;
+    }
+// starting the game
+    bool isGameOn = true;
+    board* head = fullBoard;
+    while(isGameOn == true)
+    {
+        board* current = fullBoard;
+        while(current != NULL)
+        {
+            //after each play we print the board and put the number of each box if empty or a sign of the box if not empty.
+            if(current->empty == true)
+                cout << "   " << current->pos;
+            else if(current->circle == true)
+                cout << "   " << "O";
+            else
+                cout << "   " << "X";
+            if( current->pos == 4 || current->pos == 7)
+            {
+                cout << "\n";
+                cout << "-----------------------\n";
+            }
+            else if (current->pos == 1)
+                cout << "\n";
+            else
+                cout << "   |";
+            current = current->next;
+        }
+
+
+// the turn of player 1
+        if(first == 1)
+        {
+            isPlaying = true;
+            while(isPlaying == true)
+            {
+                cout << "Player 1, please put the number corresponding to the area you want to fill: ";
+                choice=enter_choice(choice);
+                current = fullBoard;
+                while(current != NULL && current->pos != choice)
+                    current = current->next;
+//check if the place which the player choose is empty or not
+                if(current->empty == true)
+                {
+                    current->empty = false;
+                    current->square = true;
+                    isPlaying = false;
+                    first = 2;
+                    arr[(current->pos)-1]=current;
+                }
+                else
+                    cout << "The field that you chose is already used...\n";
+            }
+
+        }
+        else
+        {
+            // the turn of player 2
+            isPlaying = true;
+            while(isPlaying == true)
+            {
+                cout << "Player 2, please put the number corresponding to the area you want to fill: ";
+                 choice=enter_choice(choice);
+                current = fullBoard;
+                while(current != NULL && current->pos != choice)
+                    current = current->next;
+//check if the place which the player choose is empty or not
+                if(current->empty == true)
+                {
+                    current->empty = false;
+                    current->circle = true;
+                    isPlaying = false;
+                    first = 1;
+                    arr[(current->pos)-1]=current;
+                }
+                else
+                    cout << "The field that you chose is already used...\n";
+            }
+        }
+
+        system("cls");
+        //check if player 1 is the winner
+        
+        if(( arr[0]->square== true && arr[1]->square== true && arr[2]->square== true)
+        || ( arr[0]->square== true && arr[3]->square== true && arr[6]->square== true)
+        || ( arr[0]->square== true && arr[4]->square== true && arr[8]->square== true)
+        || ( arr[6]->square== true && arr[7]->square== true && arr[8]->square== true)
+        || ( arr[6]->square== true && arr[4]->square== true && arr[2]->square== true)
+        || ( arr[8]->square== true && arr[5]->square== true && arr[2]->square== true)
+        || ( arr[3]->square== true && arr[4]->square== true && arr[5]->square== true)){
+            cout<<"the winner is player 1 "<<endl;
+            isGameOn=false;
+        }
+         //check if player 2 is the winner
+        else if(( arr[0]->square== true && arr[1]->square== true && arr[2]->square== true)
+        || ( arr[0]->circle== true && arr[3]->circle== true && arr[6]->circle== true)
+        || ( arr[0]->circle== true && arr[4]->circle== true && arr[8]->circle== true)
+        || ( arr[6]->circle== true && arr[7]->circle== true && arr[8]->circle== true)
+        || ( arr[6]->circle== true && arr[4]->circle== true && arr[2]->circle== true)
+        || ( arr[8]->circle== true && arr[5]->circle== true && arr[2]->circle== true)
+        || ( arr[3]->circle== true && arr[4]->circle== true && arr[5]->circle== true)){
+            cout<<"the winner is player 2 "<<endl;
+            isGameOn=false;
+    }
+    //check if draw
+    else if (  arr[0]->empty== false && arr[1]->empty== false && arr[2]->empty== false
+         && arr[3]->empty== false && arr[4]->empty== false && arr[5]->empty== false
+         && arr[6]->empty== false && arr[7]->empty== false && arr[8]->empty== false){
+             cout<<"--------------DRAW-------------"<<endl;
+             isGameOn=false;
+         }
+    }
+   
+}
+// function to give numbers to the position of each new node in the linked list
+board* getBoard(board* fullBoard)
+{
+    board* newBoard = new board;
+    newBoard->empty = true;
+    newBoard->circle = false;
+    newBoard->square = false;
+    newBoard->next = fullBoard;
+    if(newBoard->next != NULL)
+        newBoard->pos = newBoard->next->pos + 1;
+    else
+        newBoard->pos = 1;
+    return newBoard;
+
+
+}
+void twoplayers()
+{
+    int dice, first;
+
+    board* fullBoard = NULL;
+    cout << "Welcome to Tic-tac-toe DOS Game. (2 Player version)\n\n";
+    cout << "X is Player 1 and O is Player 2.\nI will decide who is starting in the first match...\n ";
+    srand(time(NULL));
+    dice = 1;//rand() % 6 + 1;
+    cout << dice;
+    if(dice <= 3)
+    {
+        first = 1;
+        cout << "Player 1 is the first!\n";
+    }
+    else
+    {
+        first = 2;
+        cout << "Player 2 is the first!\n\n";
+    }
+    system("pause");
+    system("cls");
+    startGame(first, fullBoard);
+    return;
+}
